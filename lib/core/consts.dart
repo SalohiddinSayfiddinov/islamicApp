@@ -1,3 +1,4 @@
+import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
 import 'package:imtihon/service/imtihon_service.dart';
 import 'package:flutter/material.dart';
 
@@ -14,12 +15,23 @@ class Constants {
     SerivceImtihon.malumot[0]['times']['shom_iftor'],
     SerivceImtihon.malumot[0]['times']['hufton'],
   ];
+
   static List<String> namozNomlari = [
     "Saharlik",
+    "Quyosh",
     "Peshin",
     "Asr",
     "Shom",
     "Hufton",
+  ];
+
+  static List<bool> checkValue = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
   ];
 
   static List<String> rasmlar = [
@@ -45,6 +57,7 @@ class Constants {
     "Duolar",
     "Biz Haqimizda",
   ];
+
   static navigator(context, int num) {
     if (num == 0) {
       return Navigator.pushNamed(
@@ -53,36 +66,49 @@ class Constants {
         arguments: "Namoz Vaqtlari",
       );
     } else if (num == 1) {
-      return showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog();
-          });
+      showDialogim(context);
+    } else if (num == 2) {
+      return Navigator.pushNamed(context, '/suraNomPage');
+    } else if (num == 3) {
+      showDialogim(context);
+    } else if (num == 4) {
+      showDialogim(context);
+    } else if (num == 5) {
+      return Navigator.pushNamed(context, '/tasbehNomlariPage');
+    } else if (num == 6) {
+      return Navigator.pushNamed(context, '/beshUstunPage');
+    } else if (num == 7) {
+      return Navigator.pushNamed(
+        context,
+        '/duoNomPage',
+      );
+    } else if (num == 8) {
+      return Navigator.pushNamed(context, '/aboutPage');
     }
   }
 
   static int vaqt = DateTime.now().hour;
+
   static List b = [];
+
   static List<int> a = [];
 
-  static test() {
-    b.clear();
-    for (var i = 0; i < namozlar.length; i++) {
-      b.add(namozlar[i].toString().split(":"));
-    }
-    return b[0][0];
-  }
+  static List<int> c = [];
 
   static vaqtKorsat() {
     a.clear();
+    c.clear();
     for (int i = 0; i < namozlar.length; i += 1) {
       b.add(namozlar[i].toString().split(":"));
 
       a.add(int.parse(b[i][0]));
+      c.add(int.parse(b[i][1]));
     }
     if (vaqt >= 00 && vaqt < a[0]) {
       return namozlar[0];
-    } else if (vaqt >= a[0] && vaqt < a[2]) {
+    } else if (vaqt >= a[0] && vaqt < a[1]) {
+      return namozlar[1];
+    } else if (vaqt >= a[1] && vaqt < a[2]) {
       return namozlar[2];
     } else if (vaqt >= a[2] && vaqt < a[3]) {
       return namozlar[3];
@@ -98,6 +124,8 @@ class Constants {
   static vaqtJonat() {
     if (vaqtKorsat() == namozlar[0]) {
       return namozNomlari[0];
+    } else if (vaqtKorsat() == namozlar[1]) {
+      return namozNomlari[1];
     } else if (vaqtKorsat() == namozlar[2]) {
       return namozNomlari[2];
     } else if (vaqtKorsat() == namozlar[3]) {
@@ -108,4 +136,36 @@ class Constants {
       return namozNomlari[5];
     }
   }
+
+  static final shahar = [
+    "Andijon",
+    "Toshkent",
+    "Samarqand",
+    "Farg'ona",
+    "Namangan"
+  ];
+  static String dropValue = "Andijon";
+
+ 
+}
+
+showDialogim(context) {
+  return showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Column(
+          children: [
+            Image.asset("assets/images/working.gif"),
+            Text(
+              "Tez Orada...",
+              style: TextStyle(
+                  color: Colors.orange,
+                  fontSize: MediaQuery.of(context).size.height * 0.04),
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }

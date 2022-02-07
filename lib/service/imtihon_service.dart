@@ -12,7 +12,7 @@ class SerivceImtihon {
     await openBox();
     try {
       Response res = await Dio().get(
-          "https://namozvaqti.herokuapp.com/api/monthly?region=andijon&month=2");
+          "https://namozvaqti.herokuapp.com/api/monthly?region=toshkent&month=2");
 
       await putData(res.data);
     } catch (e) {

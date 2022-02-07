@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:imtihon/core/alarm.dart';
 import 'package:imtihon/routes.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 void main() async {
   await Hive.initFlutter();
   await Hive.openBox("namozvaqt");
+  WidgetsFlutterBinding.ensureInitialized();
+
+  NotificationService().initNotification();
+  tz.initializeTimeZones();
+
   runApp(const MyApp());
 }
 

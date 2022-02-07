@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:imtihon/core/alarm.dart';
 import 'package:imtihon/core/consts.dart';
 import 'package:imtihon/service/imtihon_service.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -18,15 +22,33 @@ class _HomePageState extends State<HomePage> {
   }
 
   int num = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Constants.kPrimaryColor,
         title: Text(
-          "Tashkent, Uzbekistan",
+          "${Constants.dropValue}, Uzbekistan",
           style: TextStyle(color: Constants.kTextColor),
         ),
+        actions: [
+          DropdownButtonHideUnderline(
+            child: DropdownButton(
+              style: TextStyle(color: Constants.kTextColor),
+              items: Constants.shahar
+                  .map((String item) =>
+                      DropdownMenuItem<String>(child: Text(item), value: item))
+                  .toList(),
+              onChanged: (value) {
+                setState(() {
+                  Constants.dropValue = value.toString();
+                });
+              },
+              value: Constants.dropValue,
+            ),
+          ),
+        ],
       ),
       body: ValueListenableBuilder<Box>(
         valueListenable: Hive.box("namozvaqt").listenable(),
@@ -113,32 +135,6 @@ class _HomePageState extends State<HomePage> {
           );
         },
       ),
-    );
-  }
-
-  FutureBuilder futurebuilderim() {
-    return FutureBuilder(
-      future: SerivceImtihon.getData(),
-      builder: (context, AsyncSnapshot snap) {
-        if (!snap.hasData) {
-          return const CircularProgressIndicator.adaptive();
-        } else if (SerivceImtihon.datas.contains("nodata")) {
-          return const Center(child: Text("ERROR"));
-        } else {
-          List data = SerivceImtihon.datas;
-          return SizedBox(
-            height: MediaQuery.of(context).size.height,
-            child: ListView.builder(
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(Constants.namozlar[index]),
-                );
-              },
-              itemCount: Constants.namozlar.length,
-            ),
-          );
-        }
-      },
     );
   }
 }
